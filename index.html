@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -31,14 +30,6 @@ button {
   border-radius: 9px;
   padding: 12px 18px;
   font-weight: bold;
-}
-
-.admin-button {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: #26334d;
-  color: white;
 }
 
 .container {
@@ -90,16 +81,8 @@ input:focus {
   color: white;
 }
 
-.danger {
-  background: #713b4b;
-  color: white;
-}
-
-#adminPanel, #photoSection {
-  display: none;
-}
-
 #photoSection {
+  display: none;
   margin-top: 25px;
   text-align: center;
 }
@@ -124,30 +107,12 @@ input:focus {
   flex: 1;
 }
 
-#message {
+#clientMessage {
   margin-top: 15px;
   text-align: center;
   font-size: 14px;
   color: #55e6ff;
   overflow-wrap: anywhere;
-}
-
-.admin-card {
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 10px;
-  background: #0b1020;
-}
-
-.admin-card h3 {
-  margin-bottom: 15px;
-  color: #55e6ff;
-}
-
-.admin-actions {
-  display: grid;
-  gap: 10px;
-  margin-top: 15px;
 }
 
 #zoomView {
@@ -174,21 +139,10 @@ input:focus {
   background: #26334d;
   color: white;
 }
-
-.small {
-  font-size: 12px;
-  color: #8998b2;
-  margin-top: 12px;
-  line-height: 1.5;
-}
 </style>
 </head>
 
 <body>
-
-<button class="admin-button" id="adminButton">
-  Admin
-</button>
 
 <!-- HALAMAN CLIENT -->
 <div class="container" id="clientPanel">
@@ -224,147 +178,46 @@ input:focus {
   </div>
 </div>
 
-<!-- HALAMAN ADMIN -->
-<div class="container" id="adminPanel">
-  <h1>Admin Panel</h1>
-  <p class="subtitle">Kelola kode dan foto</p>
-
-  <div class="admin-card">
-    <h3>Tambah Foto</h3>
-
-    <input
-      type="text"
-      id="newPhotoCode"
-      placeholder="Kode foto (6 digit)"
-      maxlength="6"
-      inputmode="numeric"
-    >
-
-    <input
-      type="text"
-      id="fileName"
-      placeholder="Nama file, contoh: foto.jpg"
-    >
-
-    <button class="primary" id="confirmButton">
-      Konfirmasi & Simpan
-    </button>
-
-    <p class="small">
-      Pastikan file foto sudah berada satu folder dengan index.html.
-      Contoh nama file: foto.jpg
-    </p>
-  </div>
-
-  <div class="admin-actions">
-    <button class="secondary" id="exportButton">
-      Ekspor index.html
-    </button>
-
-    <button class="danger" id="exitAdmin">
-      Keluar dari Admin
-    </button>
-  </div>
-
-  <p id="adminMessage"></p>
-</div>
-
 <!-- TAMPILAN ZOOM -->
 <div id="zoomView">
   <button id="zoomClose">Tutup</button>
   <img id="zoomImage" alt="Foto diperbesar">
 </div>
 
-<!-- DAFTAR KODE DEFAULT -->
+<!-- DATA KODE DAN NAMA FILE FOTO -->
 <script type="application/json" id="photo-data">
 {
   "482916": "alyanocalor.jpg",
-  "731054": "ninocalor.jpg"
+  "731054": "ninocalor.jpg",
+  "111001": "alya1calor.jpg",
+  "111002": "alya2calor.jpg",
+  "111003": "alya2nocalor.jpg",
+  "111004": "ellennocalor.jpg",
+  "111005": "Evernightcalor.jpg",
+  "111006": "evernightnocolor.jpg",
+  "111007": "furinacalor.jpg",
+  "111008": "hutaocalor.png",
+  "111009": "mambocalor.jpg",
+  "111010": "mambonocalor.jpg",
+  "111011": "masyacalor.png",
+  "111012": "sihirhonkaicalor.jpg",
+  "111013": "waguricalor.jpg",
+  "111014": "yukanocalor.jpg"
 }
 </script>
 
 <script>
-const ADMIN_CODE = "889845";
-
-const clientPanel = document.getElementById("clientPanel");
-const adminPanel = document.getElementById("adminPanel");
-const adminButton = document.getElementById("adminButton");
-
 const accessCode = document.getElementById("accessCode");
 const clientMessage = document.getElementById("clientMessage");
-const adminMessage = document.getElementById("adminMessage");
-
 const photo = document.getElementById("photo");
 const photoSection = document.getElementById("photoSection");
 
-const defaultPhotos = JSON.parse(
+const photoCodes = JSON.parse(
   document.getElementById("photo-data").textContent
 );
 
-// Ambil data yang pernah disimpan di browser
-function loadPhotos() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem("photoCodes") || "{}"
-    );
-
-    return {
-      ...defaultPhotos,
-      ...saved
-    };
-  } catch {
-    return { ...defaultPhotos };
-  }
-}
-
-let photoCodes = loadPhotos();
-
 let currentPhoto = "";
 
-// Simpan data ke browser
-function savePhotos() {
-  localStorage.setItem(
-    "photoCodes",
-    JSON.stringify(photoCodes)
-  );
-}
-
-// Ganti tampilan ke mode client
-function showClient() {
-  adminPanel.style.display = "none";
-  clientPanel.style.display = "block";
-  adminButton.style.display = "block";
-}
-
-// Ganti tampilan ke mode admin
-function showAdmin() {
-  clientPanel.style.display = "none";
-  adminPanel.style.display = "block";
-  adminButton.style.display = "none";
-
-  adminMessage.textContent = "";
-}
-
-// Tombol Admin
-adminButton.addEventListener("click", () => {
-  const password = prompt("Masukkan kode admin:");
-
-  if (password === null) return;
-
-  if (password === ADMIN_CODE) {
-    photoCodes = loadPhotos();
-    showAdmin();
-  } else {
-    alert("Kode admin salah!");
-  }
-});
-
-// Keluar dari Admin
-document.getElementById("exitAdmin").addEventListener("click", () => {
-  showClient();
-});
-
-// Client membuka foto
 document.getElementById("openButton").addEventListener("click", () => {
   const code = accessCode.value.trim();
 
@@ -390,105 +243,12 @@ document.getElementById("openButton").addEventListener("click", () => {
 
   photo.onerror = () => {
     photoSection.style.display = "none";
-    clientMessage.textContent = "File foto tidak ditemukan.";
+    clientMessage.textContent = "File foto fisik tidak ditemukan di folder.";
   };
 
   photo.src = filename;
 });
 
-// Admin menambahkan foto
-document.getElementById("confirmButton").addEventListener("click", () => {
-  const code = document.getElementById("newPhotoCode").value.trim();
-  const filename = document.getElementById("fileName").value.trim();
-
-  if (!/^\d{6}$/.test(code)) {
-    adminMessage.textContent = "Kode harus 6 digit angka.";
-    return;
-  }
-
-  if (!filename) {
-    adminMessage.textContent = "Masukkan nama file foto.";
-    return;
-  }
-
-  // Cegah path luar folder dan karakter berbahaya
-  if (
-    filename.includes("/") ||
-    filename.includes("\\") ||
-    filename.includes("..") ||
-    !/^[a-zA-Z0-9_. -]+\.(jpg|jpeg|png|webp)$/i.test(filename)
-  ) {
-    adminMessage.textContent =
-      "Nama file tidak valid. Contoh: foto.jpg";
-    return;
-  }
-
-  if (photoCodes[code]) {
-    adminMessage.textContent =
-      "Kode tersebut sudah digunakan.";
-    return;
-  }
-
-  // Periksa apakah foto benar-benar ada
-  const testImage = new Image();
-
-  testImage.onload = () => {
-    photoCodes[code] = filename;
-
-    // Simpan permanen di browser admin
-    savePhotos();
-
-    adminMessage.textContent =
-      "Berhasil disimpan! Jangan lupa ekspor index.html agar client lain bisa mengaksesnya.";
-
-    document.getElementById("newPhotoCode").value = "";
-    document.getElementById("fileName").value = "";
-  };
-
-  testImage.onerror = () => {
-    adminMessage.textContent =
-      "Foto tidak ditemukan. Periksa nama file dan lokasinya.";
-  };
-
-  testImage.src = filename;
-});
-
-// Ekspor index.html dengan daftar kode terbaru
-document.getElementById("exportButton").addEventListener("click", () => {
-  const latestPhotos = loadPhotos();
-
-  const newHTML = document.documentElement.cloneNode(true);
-
-  const dataElement = newHTML.querySelector("#photo-data");
-
-  dataElement.textContent = JSON.stringify(
-    latestPhotos,
-    null,
-    2
-  );
-
-  const htmlContent =
-    "<!DOCTYPE html>\n" + newHTML.outerHTML;
-
-  const blob = new Blob(
-    [htmlContent],
-    { type: "text/html;charset=utf-8" }
-  );
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "index.html";
-  link.click();
-
-  URL.revokeObjectURL(url);
-
-  adminMessage.textContent =
-    "File index.html berhasil diekspor. Unggah dan timpa file lama di GitHub.";
-});
-
-// Zoom foto
 function openZoom() {
   document.getElementById("zoomImage").src = photo.src;
   document.getElementById("zoomView").style.display = "flex";
@@ -501,7 +261,6 @@ document.getElementById("zoomClose").addEventListener("click", () => {
   document.getElementById("zoomView").style.display = "none";
 });
 
-// Download foto
 document.getElementById("downloadButton").addEventListener("click", () => {
   if (!currentPhoto) return;
 
@@ -512,9 +271,6 @@ document.getElementById("downloadButton").addEventListener("click", () => {
   link.click();
   link.remove();
 });
-
-// Awal website selalu tampil sebagai client
-showClient();
 </script>
 
 </body>
