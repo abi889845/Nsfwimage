@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Foto Premium</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #131d32;
+      --panel2: #19253d;
+      --line: #2a3852;
+      --text: #f4f7ff;
+      --muted: #9aa9c2;
+      --accent: #55e6ff;
+      --purple: #9b8cff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 28px 16px;
+      display: grid; place-items: center;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+      color: var(--text);
+      background: radial-gradient(ellipse at 50% 0%, #1b2c4b 0%, transparent 55%), var(--bg);
+    }
+    .app { width: min(100%, 760px); }
+    header { text-align: center; margin-bottom: 28px; }
+    .logo {
+      width: 54px; height: 54px; margin: 0 auto 15px; display: grid; place-items: center;
+      border: 1px solid #3c5570; border-radius: 17px; color: var(--accent);
+      background: #15243a; font-size: 25px;
+    }
+    h1 { margin: 0; font-size: clamp(30px, 7vw, 42px); letter-spacing: -1.4px; }
+    header p { color: var(--muted); margin: 9px 0 0; font-size: 14px; }
+    .panel {
+      background: linear-gradient(145deg, #17243b, #111a2c);
+      border: 1px solid var(--line); border-radius: 22px;
+      padding: clamp(20px, 5vw, 30px); box-shadow: 0 24px 70px #0005;
+    }
+    label { display: block; margin-bottom: 11px; font-size: 12px; font-weight: 800; letter-spacing: 1.5px; color: #c5d2e8; }
+    .form-row { display: flex; gap: 10px; }
+    input {
+      min-width: 0; flex: 1; padding: 16px 14px; border-radius: 13px;
+      border: 1px solid #3a4b68; outline: none; background: #0b1424;
+      color: white; text-align: center; font-size: 22px; letter-spacing: 9px;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #55e6ff18; }
+    button, .download {
+      border: 0; border-radius: 13px; padding: 0 20px; min-height: 54px;
+      font-weight: 800; font-size: 14px; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .primary { color: #07131e; background: linear-gradient(120deg, var(--accent), #8cf5df); }
+    button:active, .download:active { transform: scale(.98); }
+    .hint { color: #8292ad; font-size: 12px; margin: 11px 2px 0; }
+    .message { min-height: 20px; margin: 13px 2px 0; font-size: 13px; color: #ff9b9b; }
+    .photo-card {
+      display: none; margin-top: 20px; overflow: hidden; border-radius: 20px;
+      border: 1px solid var(--line); background: var(--panel);
+    }
+    .photo-card.show { display: block; }
+    .photo-top { padding: 15px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); }
+    .photo-top strong { font-size: 14px; }
+    .valid { color: #69e7c1; font-size: 11px; font-weight: 800; letter-spacing: .8px; }
+    .image-wrap { padding: 12px; background: #080d17; text-align: center; }
+    .image-wrap img { max-width: 100%; max-height: 68vh; width: auto; height: auto; border-radius: 11px; cursor: zoom-in; }
+    .actions { display: flex; gap: 10px; padding: 14px; }
+    .actions > * { flex: 1; }
+    .download { color: #07131e; background: var(--accent); }
+    .secondary { color: #eaf0ff; background: var(--panel2); border: 1px solid #35445f; }
+    .footnote { text-align: center; color: #72819a; font-size: 11px; line-height: 1.6; margin: 20px auto 0; max-width: 520px; }
+    .modal { display: none; position: fixed; inset: 0; z-index: 10; background: #02040dee; padding: 16px; align-items: center; justify-content: center; cursor: zoom-out; }
+    .modal.show { display: flex; }
+    .modal img { max-width: 96vw; max-height: 94vh; object-fit: contain; }
+    @media (max-width: 520px) {
+      .form-row { flex-direction: column; }
+      .actions { flex-direction: column; }
+      .photo-top { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="logo">✦</div>
+      <h1>Foto Premium</h1>
+      <p>Masukkan kode akses untuk membuka foto.</p>
+    </header>
+
+    <section class="panel">
+      <form id="accessForm">
+        <label for="accessCode">KODE AKSES</label>
+        <div class="form-row">
+          <input id="accessCode" type="text" inputmode="numeric" maxlength="6"
+                 placeholder="••••••" autocomplete="off" aria-label="Kode akses 6 digit" required>
+          <button class="primary" type="submit" id="submitButton">Buka Foto</button>
+        </div>
+        <p class="hint">Masukkan kode 6 digit yang diberikan admin.</p>
+        <p class="message" id="message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="photo-card" id="photoCard">
+      <div class="photo-top">
+        <strong>Foto berhasil dibuka</strong>
+        <span class="valid">● KODE VALID</span>
+      </div>
+      <div class="image-wrap">
+        <img id="resultImage" alt="Foto premium">
+      </div>
+      <div class="actions">
+        <a class="download" id="downloadLink" href="#" download>↓ Download Foto</a>
+        <button class="secondary" id="zoomButton" type="button">Perbesar Foto</button>
+      </div>
+    </section>
+
+    <p class="footnote">Setiap kode membuka satu foto. Foto dapat diperbesar dan diunduh.</p>
+  </main>
+
+  <div class="modal" id="imageModal" aria-label="Foto diperbesar">
+    <img id="zoomImage" alt="Foto diperbesar">
+  </div>
+
+  <script>
+    // EDIT DAFTAR KODE DAN FOTO DI BAGIAN INI.
+    // Ganti URL contoh dengan URL foto milikmu.
+    const photoCodes = {
+      "482916": "alyanocalor.jpg",
+      "731054": "https://placehold.co/1200x1500/19253d/9b8cff?text=Foto+Premium+2"
+    };
+
+    const form = document.getElementById("accessForm");
+    const input = document.getElementById("accessCode");
+    const message = document.getElementById("message");
+    const card = document.getElementById("photoCard");
+    const image = document.getElementById("resultImage");
+    const download = document.getElementById("downloadLink");
+    const modal = document.getElementById("imageModal");
+    const zoomImage = document.getElementById("zoomImage");
+
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/\D/g, "").slice(0, 6);
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const code = input.value.trim();
+      const photoUrl = photoCodes[code];
+
+      card.classList.remove("show");
+      message.style.color = "#ff9b9b";
+
+      if (!/^\d{6}$/.test(code)) {
+        message.textContent = "Kode harus terdiri dari 6 angka.";
+        return;
+      }
+
+      if (!photoUrl) {
+        message.textContent = "Kode tidak valid. Periksa kembali kode kamu.";
+        return;
+      }
+
+      image.src = photoUrl;
+      zoomImage.src = photoUrl;
+      download.href = photoUrl;
+      download.setAttribute("download", `foto-premium-${code}`);
+      image.onerror = () => {
+        message.textContent = "Foto gagal dimuat. Periksa URL foto di pengaturan kode.";
+        card.classList.remove("show");
+      };
+      image.onload = () => {
+        message.textContent = "Kode berhasil. Selamat melihat foto!";
+        message.style.color = "#69e7c1";
+        card.classList.add("show");
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+    });
+
+    function openZoom() { modal.classList.add("show"); }
+    image.addEventListener("click", openZoom);
+    document.getElementById("zoomButton").addEventListener("click", openZoom);
+    modal.addEventListener("click", () => modal.classList.remove("show"));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") modal.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
