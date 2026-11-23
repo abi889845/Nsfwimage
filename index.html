@@ -4,132 +4,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1020">
 <title>Foto Premium</title>
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;
-  background:radial-gradient(circle at top,#1b2b49 0,#0b1020 48%,#070b14 100%);
-  color:#eef4ff;font-family:Arial,sans-serif;
-  display:flex;align-items:center;justify-content:center;padding:24px
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.admin-top{position:fixed;right:18px;top:18px;z-index:10}
-button{
-  border:0;border-radius:10px;padding:12px 17px;
-  background:#55e6ff;color:#07111d;font-weight:700;cursor:pointer
+
+body {
+  min-height: 100vh;
+  background: #0b1020;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
-button.secondary{background:#263650;color:#eaf4ff}
-button:disabled{opacity:.55;cursor:not-allowed}
-.card{
-  width:min(100%,520px);background:rgba(19,29,50,.94);
-  border:1px solid #2b3c5a;border-radius:20px;padding:28px;
-  box-shadow:0 20px 70px #0008
+
+button, input {
+  font: inherit;
 }
-h1{margin:0 0 8px;font-size:28px}
-h2{font-size:19px;margin:0 0 8px}
-.muted{color:#aab9d0;line-height:1.5}
-.field{margin-top:18px}
-label{display:block;margin-bottom:8px;color:#dce8fa;font-size:14px}
-input{
-  width:100%;padding:14px;border-radius:10px;
-  border:1px solid #405271;background:#0c1628;
-  color:white;font-size:16px;outline:none
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 9px;
+  padding: 12px 18px;
+  font-weight: bold;
 }
-input:focus{border-color:#55e6ff}
-.full{width:100%;margin-top:16px}
-.message{min-height:22px;margin-top:14px;color:#ffcf79;font-size:14px;line-height:1.45}
-.photo-wrap{display:none;margin-top:22px}
-.photo-wrap img{
-  display:block;width:100%;max-height:65vh;object-fit:contain;
-  border-radius:12px;background:#080d17;cursor:zoom-in
+
+.admin-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: #26334d;
+  color: white;
 }
-.photo-actions{display:flex;gap:10px;margin-top:12px}
-.photo-actions button{flex:1}
-.admin-panel{display:none;margin-top:24px;padding-top:20px;border-top:1px solid #34445f}
-.small{font-size:12px;color:#9fb0c9;line-height:1.5}
-.code-list{
-  margin-top:14px;padding:12px;border-radius:10px;
-  background:#0c1628;color:#b9c9df;font-size:13px;
-  line-height:1.7;overflow-wrap:anywhere
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 90px auto 30px;
+  background: #131d32;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #26334d;
 }
-@media(max-width:480px){
-  .card{padding:22px}
-  .admin-top{right:12px;top:12px}
-  .admin-top button{padding:10px 13px}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #55e6ff;
+}
+
+.subtitle {
+  text-align: center;
+  color: #9ba9c2;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #34435f;
+  border-radius: 9px;
+  background: #0b1020;
+  color: white;
+  outline: none;
+  margin-bottom: 14px;
+}
+
+input:focus {
+  border-color: #55e6ff;
+}
+
+.primary {
+  width: 100%;
+  background: #55e6ff;
+  color: #07111d;
+}
+
+.secondary {
+  background: #26334d;
+  color: white;
+}
+
+.danger {
+  background: #713b4b;
+  color: white;
+}
+
+#adminPanel, #photoSection {
+  display: none;
+}
+
+#photoSection {
+  margin-top: 25px;
+  text-align: center;
+}
+
+#photo {
+  display: block;
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #080d18;
+  cursor: zoom-in;
+  margin-bottom: 15px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+#message {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #55e6ff;
+  overflow-wrap: anywhere;
+}
+
+.admin-card {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #0b1020;
+}
+
+.admin-card h3 {
+  margin-bottom: 15px;
+  color: #55e6ff;
+}
+
+.admin-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+#zoomView {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0,0,0,.95);
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+#zoomView img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+#zoomClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #26334d;
+  color: white;
+}
+
+.small {
+  font-size: 12px;
+  color: #8998b2;
+  margin-top: 12px;
+  line-height: 1.5;
 }
 </style>
 </head>
 
 <body>
 
-<div class="admin-top">
-  <button class="secondary" id="adminButton">Admin</button>
+<button class="admin-button" id="adminButton">
+  Admin
+</button>
+
+<!-- HALAMAN CLIENT -->
+<div class="container" id="clientPanel">
+  <h1>Foto Premium</h1>
+  <p class="subtitle">Masukkan kode akses untuk membuka foto</p>
+
+  <input
+    type="text"
+    id="accessCode"
+    placeholder="Masukkan 6 digit kode"
+    maxlength="6"
+    inputmode="numeric"
+  >
+
+  <button class="primary" id="openButton">
+    Buka Foto
+  </button>
+
+  <p id="clientMessage"></p>
+
+  <div id="photoSection">
+    <img id="photo" alt="Foto premium">
+
+    <div class="actions">
+      <button class="secondary" id="zoomButton">
+        Perbesar
+      </button>
+
+      <button class="primary" id="downloadButton">
+        Download
+      </button>
+    </div>
+  </div>
 </div>
 
-<main class="card">
-  <h1>Foto Premium</h1>
+<!-- HALAMAN ADMIN -->
+<div class="container" id="adminPanel">
+  <h1>Admin Panel</h1>
+  <p class="subtitle">Kelola kode dan foto</p>
 
-  <!-- MODE CLIENT -->
-  <section id="clientPanel">
-    <p class="muted">Masukkan kode foto 6 digit untuk membuka foto.</p>
+  <div class="admin-card">
+    <h3>Tambah Foto</h3>
 
-    <div class="field">
-      <label for="accessCode">Kode foto</label>
-      <input id="accessCode" type="text"
-        inputmode="numeric" maxlength="6"
-        placeholder="Contoh: 482916" autocomplete="off">
-    </div>
+    <input
+      type="text"
+      id="newPhotoCode"
+      placeholder="Kode foto (6 digit)"
+      maxlength="6"
+      inputmode="numeric"
+    >
 
-    <button class="full" id="openButton">Buka Foto</button>
-    <div class="message" id="message" role="status"></div>
+    <input
+      type="text"
+      id="fileName"
+      placeholder="Nama file, contoh: foto.jpg"
+    >
 
-    <section class="photo-wrap" id="photoWrap">
-      <img id="photo" alt="Foto premium" title="Klik foto untuk memperbesar">
-      <div class="photo-actions">
-        <button id="downloadButton">Download Foto</button>
-        <button class="secondary" id="zoomButton">Perbesar</button>
-      </div>
-    </section>
-  </section>
-
-  <!-- MODE ADMIN -->
-  <section class="admin-panel" id="adminPanel">
-    <h2>Tambah Foto</h2>
-    <p class="muted">
-      Masukkan kode akses foto dan nama file yang sudah berada
-      satu folder dengan index.html.
-    </p>
-
-    <div class="field">
-      <label for="newPhotoCode">Kode foto (6 digit)</label>
-      <input id="newPhotoCode" type="text"
-        inputmode="numeric" maxlength="6"
-        placeholder="Contoh: 654321" autocomplete="off">
-    </div>
-
-    <div class="field">
-      <label for="fileName">Nama file foto</label>
-      <input id="fileName" type="text"
-        placeholder="Contoh: foto.jpg" autocomplete="off">
-    </div>
-
-    <button class="full" id="confirmButton">Simpan Foto</button>
-
-    <div class="message" id="adminMessage" role="status"></div>
+    <button class="primary" id="confirmButton">
+      Konfirmasi & Simpan
+    </button>
 
     <p class="small">
-      Setelah berhasil, index.html terbaru akan otomatis diunduh.
-      Ganti file lama di GitHub dengan file terbaru tersebut.
+      Pastikan file foto sudah berada satu folder dengan index.html.
+      Contoh nama file: foto.jpg
     </p>
+  </div>
 
-    <div class="code-list" id="codeList"></div>
-  </section>
-</main>
+  <div class="admin-actions">
+    <button class="secondary" id="exportButton">
+      Ekspor index.html
+    </button>
 
-<!-- DATA KODE FOTO -->
-<script id="photo-data" type="application/json">
+    <button class="danger" id="exitAdmin">
+      Keluar dari Admin
+    </button>
+  </div>
+
+  <p id="adminMessage"></p>
+</div>
+
+<!-- TAMPILAN ZOOM -->
+<div id="zoomView">
+  <button id="zoomClose">Tutup</button>
+  <img id="zoomImage" alt="Foto diperbesar">
+</div>
+
+<!-- DAFTAR KODE DEFAULT -->
+<script type="application/json" id="photo-data">
 {
   "482916": "alyanocalor.jpg",
   "731054": "ninocalor.jpg"
@@ -139,256 +286,235 @@ input:focus{border-color:#55e6ff}
 <script>
 const ADMIN_CODE = "889845";
 
-const photoCodes = JSON.parse(
-  document.getElementById("photo-data").textContent
-);
-
 const clientPanel = document.getElementById("clientPanel");
 const adminPanel = document.getElementById("adminPanel");
 const adminButton = document.getElementById("adminButton");
 
 const accessCode = document.getElementById("accessCode");
-const message = document.getElementById("message");
-const photoWrap = document.getElementById("photoWrap");
+const clientMessage = document.getElementById("clientMessage");
+const adminMessage = document.getElementById("adminMessage");
+
 const photo = document.getElementById("photo");
+const photoSection = document.getElementById("photoSection");
 
-let isAdmin = false;
-let currentPhotoPath = "";
+const defaultPhotos = JSON.parse(
+  document.getElementById("photo-data").textContent
+);
 
-// LOGIN ADMIN
-adminButton.addEventListener("click", () => {
-  if (isAdmin) {
-    logoutAdmin();
-    return;
+// Ambil data yang pernah disimpan di browser
+function loadPhotos() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem("photoCodes") || "{}"
+    );
+
+    return {
+      ...defaultPhotos,
+      ...saved
+    };
+  } catch {
+    return { ...defaultPhotos };
   }
-
-  const entered = prompt("Masukkan kode admin:");
-
-  if (entered === null) return;
-
-  if (entered !== ADMIN_CODE) {
-    alert("Kode admin salah.");
-    return;
-  }
-
-  loginAdmin();
-});
-
-function loginAdmin() {
-  isAdmin = true;
-  clientPanel.style.display = "none";
-  adminPanel.style.display = "block";
-  adminButton.textContent = "Keluar Admin";
-  updateCodeList();
 }
 
-// KELUAR ADMIN
-function logoutAdmin() {
-  isAdmin = false;
+let photoCodes = loadPhotos();
+
+let currentPhoto = "";
+
+// Simpan data ke browser
+function savePhotos() {
+  localStorage.setItem(
+    "photoCodes",
+    JSON.stringify(photoCodes)
+  );
+}
+
+// Ganti tampilan ke mode client
+function showClient() {
   adminPanel.style.display = "none";
   clientPanel.style.display = "block";
-  adminButton.textContent = "Admin";
-
-  document.getElementById("adminMessage").textContent = "";
-  document.getElementById("newPhotoCode").value = "";
-  document.getElementById("fileName").value = "";
-  photoWrap.style.display = "none";
-  message.textContent = "";
-  accessCode.value = "";
+  adminButton.style.display = "block";
 }
 
-// CLIENT MEMBUKA FOTO
-document.getElementById("openButton")
-  .addEventListener("click", openPhoto);
+// Ganti tampilan ke mode admin
+function showAdmin() {
+  clientPanel.style.display = "none";
+  adminPanel.style.display = "block";
+  adminButton.style.display = "none";
 
-accessCode.addEventListener("keydown", e => {
-  if (e.key === "Enter") openPhoto();
+  adminMessage.textContent = "";
+}
+
+// Tombol Admin
+adminButton.addEventListener("click", () => {
+  const password = prompt("Masukkan kode admin:");
+
+  if (password === null) return;
+
+  if (password === ADMIN_CODE) {
+    photoCodes = loadPhotos();
+    showAdmin();
+  } else {
+    alert("Kode admin salah!");
+  }
 });
 
-function openPhoto() {
+// Keluar dari Admin
+document.getElementById("exitAdmin").addEventListener("click", () => {
+  showClient();
+});
+
+// Client membuka foto
+document.getElementById("openButton").addEventListener("click", () => {
   const code = accessCode.value.trim();
 
-  message.textContent = "";
-  photoWrap.style.display = "none";
-
   if (!/^\d{6}$/.test(code)) {
-    message.textContent = "Kode harus terdiri dari 6 angka.";
+    clientMessage.textContent = "Kode harus terdiri dari 6 digit.";
+    photoSection.style.display = "none";
     return;
   }
 
-  const path = photoCodes[code];
+  const filename = photoCodes[code];
 
-  if (!path) {
-    message.textContent = "Kode foto tidak ditemukan.";
+  if (!filename) {
+    clientMessage.textContent = "Kode foto tidak ditemukan.";
+    photoSection.style.display = "none";
     return;
   }
 
   photo.onload = () => {
-    currentPhotoPath = path;
-    photoWrap.style.display = "block";
-    photoWrap.scrollIntoView({
-      behavior:"smooth",
-      block:"nearest"
-    });
+    currentPhoto = filename;
+    photoSection.style.display = "block";
+    clientMessage.textContent = "Foto berhasil dibuka.";
   };
 
   photo.onerror = () => {
-    message.textContent =
-      "File foto tidak ditemukan. Periksa nama file di GitHub.";
-    photoWrap.style.display = "none";
+    photoSection.style.display = "none";
+    clientMessage.textContent = "File foto tidak ditemukan.";
   };
 
-  photo.src = path;
-}
+  photo.src = filename;
+});
 
-// DOWNLOAD FOTO
-document.getElementById("downloadButton")
-  .addEventListener("click", () => {
-    if (!currentPhotoPath) return;
+// Admin menambahkan foto
+document.getElementById("confirmButton").addEventListener("click", () => {
+  const code = document.getElementById("newPhotoCode").value.trim();
+  const filename = document.getElementById("fileName").value.trim();
 
-    const link = document.createElement("a");
-    link.href = currentPhotoPath;
-    link.download = currentPhotoPath.split("/").pop();
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  });
-
-// ZOOM FOTO
-function toggleZoom() {
-  if (!currentPhotoPath) return;
-
-  if (photo.requestFullscreen) {
-    photo.requestFullscreen();
-  } else {
-    window.open(currentPhotoPath, "_blank");
+  if (!/^\d{6}$/.test(code)) {
+    adminMessage.textContent = "Kode harus 6 digit angka.";
+    return;
   }
-}
 
-photo.addEventListener("click", toggleZoom);
-document.getElementById("zoomButton")
-  .addEventListener("click", toggleZoom);
+  if (!filename) {
+    adminMessage.textContent = "Masukkan nama file foto.";
+    return;
+  }
 
-// DAFTAR KODE
-function updateCodeList() {
-  const entries = Object.entries(photoCodes);
+  // Cegah path luar folder dan karakter berbahaya
+  if (
+    filename.includes("/") ||
+    filename.includes("\\") ||
+    filename.includes("..") ||
+    !/^[a-zA-Z0-9_. -]+\.(jpg|jpeg|png|webp)$/i.test(filename)
+  ) {
+    adminMessage.textContent =
+      "Nama file tidak valid. Contoh: foto.jpg";
+    return;
+  }
 
-  document.getElementById("codeList").innerHTML =
-    "<b>Kode foto terdaftar:</b><br>" +
-    (entries.length
-      ? entries.map(([code, file]) =>
-          `${escapeHtml(code)} → ${escapeHtml(file)}`
-        ).join("<br>")
-      : "Belum ada kode.");
-}
+  if (photoCodes[code]) {
+    adminMessage.textContent =
+      "Kode tersebut sudah digunakan.";
+    return;
+  }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, ch => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[ch]));
-}
+  // Periksa apakah foto benar-benar ada
+  const testImage = new Image();
 
-// SIMPAN FOTO DAN EKSPOR INDEX OTOMATIS
-document.getElementById("confirmButton")
-  .addEventListener("click", async () => {
-
-    const code = document.getElementById("newPhotoCode").value.trim();
-    const filename = document.getElementById("fileName").value.trim();
-
-    const msg = document.getElementById("adminMessage");
-    const btn = document.getElementById("confirmButton");
-
-    msg.textContent = "";
-
-    // Validasi kode
-    if (!/^\d{6}$/.test(code)) {
-      msg.textContent = "Kode harus tepat 6 angka.";
-      return;
-    }
-
-    // Validasi nama file
-    if (!/^[a-zA-Z0-9._-]+\.(jpg|jpeg|png|webp|gif)$/i.test(filename)) {
-      msg.textContent = "Nama file tidak valid. Contoh: foto.jpg";
-      return;
-    }
-
-    // Cek kode duplikat
-    if (Object.prototype.hasOwnProperty.call(photoCodes, code)) {
-      msg.textContent = "Kode sudah digunakan. Gunakan kode lain.";
-      return;
-    }
-
-    btn.disabled = true;
-    msg.textContent = "Memeriksa foto...";
-
-    // Periksa keberadaan file foto
-    const imageTest = new Image();
-
-    const exists = await new Promise(resolve => {
-      imageTest.onload = () => resolve(true);
-      imageTest.onerror = () => resolve(false);
-      imageTest.src = filename;
-    });
-
-    btn.disabled = false;
-
-    if (!exists) {
-      msg.textContent =
-        "Foto tidak ditemukan. Pastikan foto sudah ada satu folder dengan index.html.";
-      return;
-    }
-
-    // Tambahkan data baru
+  testImage.onload = () => {
     photoCodes[code] = filename;
 
-    updateCodeList();
+    // Simpan permanen di browser admin
+    savePhotos();
 
-    // Buat salinan HTML terbaru
-    const clone = document.documentElement.cloneNode(true);
+    adminMessage.textContent =
+      "Berhasil disimpan! Jangan lupa ekspor index.html agar client lain bisa mengaksesnya.";
 
-    clone.querySelector("#photo-data").textContent =
-      JSON.stringify(photoCodes, null, 2);
+    document.getElementById("newPhotoCode").value = "";
+    document.getElementById("fileName").value = "";
+  };
 
-    // Hasil ekspor kembali ke tampilan CLIENT
-    clone.querySelector("#clientPanel").style.display = "";
-    clone.querySelector("#adminPanel").style.display = "none";
-    clone.querySelector("#adminButton").textContent = "Admin";
+  testImage.onerror = () => {
+    adminMessage.textContent =
+      "Foto tidak ditemukan. Periksa nama file dan lokasinya.";
+  };
 
-    // Bersihkan form
-    clone.querySelector("#accessCode").value = "";
-    clone.querySelector("#newPhotoCode").value = "";
-    clone.querySelector("#fileName").value = "";
-    clone.querySelector("#message").textContent = "";
-    clone.querySelector("#adminMessage").textContent = "";
+  testImage.src = filename;
+});
 
-    const output = "<!DOCTYPE html>\n" + clone.outerHTML;
+// Ekspor index.html dengan daftar kode terbaru
+document.getElementById("exportButton").addEventListener("click", () => {
+  const latestPhotos = loadPhotos();
 
-    // Download index.html otomatis
-    const blob = new Blob(
-      [output],
-      {type:"text/html;charset=utf-8"}
-    );
+  const newHTML = document.documentElement.cloneNode(true);
 
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+  const dataElement = newHTML.querySelector("#photo-data");
 
-    link.href = url;
-    link.download = "index.html";
+  dataElement.textContent = JSON.stringify(
+    latestPhotos,
+    null,
+    2
+  );
 
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+  const htmlContent =
+    "<!DOCTYPE html>\n" + newHTML.outerHTML;
 
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  const blob = new Blob(
+    [htmlContent],
+    { type: "text/html;charset=utf-8" }
+  );
 
-    msg.textContent =
-      "Berhasil! index.html terbaru sudah diunduh. Ganti file lama di GitHub.";
-  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "index.html";
+  link.click();
+
+  URL.revokeObjectURL(url);
+
+  adminMessage.textContent =
+    "File index.html berhasil diekspor. Unggah dan timpa file lama di GitHub.";
+});
+
+// Zoom foto
+function openZoom() {
+  document.getElementById("zoomImage").src = photo.src;
+  document.getElementById("zoomView").style.display = "flex";
+}
+
+document.getElementById("zoomButton").addEventListener("click", openZoom);
+photo.addEventListener("click", openZoom);
+
+document.getElementById("zoomClose").addEventListener("click", () => {
+  document.getElementById("zoomView").style.display = "none";
+});
+
+// Download foto
+document.getElementById("downloadButton").addEventListener("click", () => {
+  if (!currentPhoto) return;
+
+  const link = document.createElement("a");
+  link.href = currentPhoto;
+  link.download = currentPhoto.split("/").pop();
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+});
+
+// Awal website selalu tampil sebagai client
+showClient();
 </script>
 
 </body>
