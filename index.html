@@ -76,6 +76,11 @@ input:focus {
   color: #07111d;
 }
 
+.primary:disabled {
+  background: #2b6d7a;
+  cursor: not-allowed;
+}
+
 .secondary {
   background: #26334d;
   color: white;
@@ -184,42 +189,20 @@ input:focus {
   <img id="zoomImage" alt="Foto diperbesar">
 </div>
 
-<!-- DATA KODE DAN NAMA FILE FOTO -->
-<script type="application/json" id="photo-data">
-{
-  "482916": "alyanocalor.jpg",
-  "731054": "ninocalor.jpg",
-  "665783": "alya1calor.jpg",
-  "336584": "alya2calor.jpg",
-  "775648": "alya2nocalor.jpg",
-  "564385": "ellennocalor.jpg",
-  "907468": "Evernightcalor.jpg",
-  "243562": "evernightnocolor.jpg",
-  "657841": "furinacalor.jpg",
-  "123324": "hutaocalor.png",
-  "653728": "mambocalor.jpg",
-  "111010": "mambonocalor.jpg",
-  "223156": "masyacalor.png",
-  "111012": "sihirhonkaicalor.jpg",
-  "334512": "waguricalor.jpg",
-  "667856": "yukanocalor.jpg",
-  "990234": "nakedanimedoggystyle1.jpg"
-}
-</script>
-
 <script>
+// ================= TEMPAT HUBUNGKAN KE BACKEND =================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznJTe8JZwQjYa_CWzNkH3xw3V-k6oAyOxmx1HK5x6O8nqTaze2vkphtDxp3K-sln1_/exec";
+// ===============================================================
+
 const accessCode = document.getElementById("accessCode");
+const openButton = document.getElementById("openButton");
 const clientMessage = document.getElementById("clientMessage");
 const photo = document.getElementById("photo");
 const photoSection = document.getElementById("photoSection");
 
-const photoCodes = JSON.parse(
-  document.getElementById("photo-data").textContent
-);
-
 let currentPhoto = "";
 
-document.getElementById("openButton").addEventListener("click", () => {
+openButton.addEventListener("click", async () => {
   const code = accessCode.value.trim();
 
   if (!/^\d{6}$/.test(code)) {
@@ -228,26 +211,38 @@ document.getElementById("openButton").addEventListener("click", () => {
     return;
   }
 
-  const filename = photoCodes[code];
+  // Kunci tombol sementara proses pengecekan ke server
+  openButton.disabled = true;
+  openButton.textContent = "Mengecek kode...";
+  clientMessage.textContent = "";
+  photoSection.style.display = "none";
 
-  if (!filename) {
-    clientMessage.textContent = "Kode foto tidak ditemukan.";
-    photoSection.style.display = "none";
-    return;
+  try {
+    const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`);
+    const data = await response.json();
+
+    if (data.status === "success" && data.filename) {
+      photo.onload = () => {
+        currentPhoto = data.filename;
+        photoSection.style.display = "block";
+        clientMessage.textContent = "Foto berhasil dibuka.";
+      };
+
+      photo.onerror = () => {
+        photoSection.style.display = "none";
+        clientMessage.textContent = "Kode benar, tapi file foto tidak ditemukan di folder.";
+      };
+
+      photo.src = data.filename;
+    } else {
+      clientMessage.textContent = data.message || "Kode foto tidak ditemukan.";
+    }
+  } catch (error) {
+    clientMessage.textContent = "Gagal terhubung ke server. Coba lagi nanti.";
+  } finally {
+    openButton.disabled = false;
+    openButton.textContent = "Buka Foto";
   }
-
-  photo.onload = () => {
-    currentPhoto = filename;
-    photoSection.style.display = "block";
-    clientMessage.textContent = "Foto berhasil dibuka.";
-  };
-
-  photo.onerror = () => {
-    photoSection.style.display = "none";
-    clientMessage.textContent = "File foto fisik tidak ditemukan di folder.";
-  };
-
-  photo.src = filename;
 });
 
 function openZoom() {
