@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,139 +9,51 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
-  margin:0;
-  min-height:100vh;
+  margin:0;min-height:100vh;
   background:radial-gradient(circle at top,#1b2b49 0,#0b1020 48%,#070b14 100%);
-  color:#eef4ff;
-  font-family:Arial,sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
+  color:#eef4ff;font-family:Arial,sans-serif;
+  display:flex;align-items:center;justify-content:center;padding:24px
 }
-
-.admin-top{
-  position:fixed;
-  right:18px;
-  top:18px;
-  z-index:10;
-}
-
+.admin-top{position:fixed;right:18px;top:18px;z-index:10}
 button{
-  border:0;
-  border-radius:10px;
-  padding:12px 17px;
-  background:#55e6ff;
-  color:#07111d;
-  font-weight:700;
-  cursor:pointer;
+  border:0;border-radius:10px;padding:12px 17px;
+  background:#55e6ff;color:#07111d;font-weight:700;cursor:pointer
 }
-
-button.secondary{
-  background:#263650;
-  color:#eaf4ff;
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
+button.secondary{background:#263650;color:#eaf4ff}
+button:disabled{opacity:.55;cursor:not-allowed}
 .card{
-  width:min(100%,520px);
-  background:rgba(19,29,50,.94);
-  border:1px solid #2b3c5a;
-  border-radius:20px;
-  padding:28px;
-  box-shadow:0 20px 70px #0008;
+  width:min(100%,520px);background:rgba(19,29,50,.94);
+  border:1px solid #2b3c5a;border-radius:20px;padding:28px;
+  box-shadow:0 20px 70px #0008
 }
-
 h1{margin:0 0 8px;font-size:28px}
-
 h2{font-size:19px;margin:0 0 8px}
-
 .muted{color:#aab9d0;line-height:1.5}
-
 .field{margin-top:18px}
-
-label{
-  display:block;
-  margin-bottom:8px;
-  color:#dce8fa;
-  font-size:14px;
-}
-
+label{display:block;margin-bottom:8px;color:#dce8fa;font-size:14px}
 input{
-  width:100%;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #405271;
-  background:#0c1628;
-  color:white;
-  font-size:16px;
-  outline:none;
+  width:100%;padding:14px;border-radius:10px;
+  border:1px solid #405271;background:#0c1628;
+  color:white;font-size:16px;outline:none
 }
-
 input:focus{border-color:#55e6ff}
-
 .full{width:100%;margin-top:16px}
-
-.message{
-  min-height:22px;
-  margin-top:14px;
-  color:#ffcf79;
-  font-size:14px;
-  line-height:1.45;
-}
-
+.message{min-height:22px;margin-top:14px;color:#ffcf79;font-size:14px;line-height:1.45}
 .photo-wrap{display:none;margin-top:22px}
-
 .photo-wrap img{
-  display:block;
-  width:100%;
-  max-height:65vh;
-  object-fit:contain;
-  border-radius:12px;
-  background:#080d17;
-  cursor:zoom-in;
+  display:block;width:100%;max-height:65vh;object-fit:contain;
+  border-radius:12px;background:#080d17;cursor:zoom-in
 }
-
-.photo-actions{
-  display:flex;
-  gap:10px;
-  margin-top:12px;
-}
-
+.photo-actions{display:flex;gap:10px;margin-top:12px}
 .photo-actions button{flex:1}
-
-.admin-panel{
-  display:none;
-  margin-top:24px;
-  padding-top:20px;
-  border-top:1px solid #34445f;
-}
-
-.small{
-  font-size:12px;
-  color:#9fb0c9;
-  line-height:1.5;
-}
-
-.export{display:none;margin-top:14px}
-
+.admin-panel{display:none;margin-top:24px;padding-top:20px;border-top:1px solid #34445f}
+.small{font-size:12px;color:#9fb0c9;line-height:1.5}
 .code-list{
-  margin-top:14px;
-  padding:12px;
-  border-radius:10px;
-  background:#0c1628;
-  color:#b9c9df;
-  font-size:13px;
-  line-height:1.7;
-  overflow-wrap:anywhere;
+  margin-top:14px;padding:12px;border-radius:10px;
+  background:#0c1628;color:#b9c9df;font-size:13px;
+  line-height:1.7;overflow-wrap:anywhere
 }
-
 @media(max-width:480px){
   .card{padding:22px}
   .admin-top{right:12px;top:12px}
@@ -156,101 +69,66 @@ input:focus{border-color:#55e6ff}
 </div>
 
 <main class="card">
-
   <h1>Foto Premium</h1>
 
   <!-- MODE CLIENT -->
   <section id="clientPanel">
-
-    <p class="muted">
-      Masukkan kode foto 6 digit untuk membuka foto.
-    </p>
+    <p class="muted">Masukkan kode foto 6 digit untuk membuka foto.</p>
 
     <div class="field">
       <label for="accessCode">Kode foto</label>
-      <input
-        id="accessCode"
-        type="text"
-        inputmode="numeric"
-        maxlength="6"
-        placeholder="Contoh: 482916"
-        autocomplete="off"
-      >
+      <input id="accessCode" type="text"
+        inputmode="numeric" maxlength="6"
+        placeholder="Contoh: 482916" autocomplete="off">
     </div>
 
     <button class="full" id="openButton">Buka Foto</button>
-
     <div class="message" id="message" role="status"></div>
 
     <section class="photo-wrap" id="photoWrap">
-      <img
-        id="photo"
-        alt="Foto premium"
-        title="Klik foto untuk memperbesar"
-      >
-
+      <img id="photo" alt="Foto premium" title="Klik foto untuk memperbesar">
       <div class="photo-actions">
         <button id="downloadButton">Download Foto</button>
         <button class="secondary" id="zoomButton">Perbesar</button>
       </div>
     </section>
-
   </section>
 
   <!-- MODE ADMIN -->
   <section class="admin-panel" id="adminPanel">
-
     <h2>Tambah Foto</h2>
-
     <p class="muted">
-      Masukkan kode akses untuk foto dan nama file foto
-      yang sudah ada satu folder dengan index.html.
+      Masukkan kode akses foto dan nama file yang sudah berada
+      satu folder dengan index.html.
     </p>
 
     <div class="field">
       <label for="newPhotoCode">Kode foto (6 digit)</label>
-      <input
-        id="newPhotoCode"
-        type="text"
-        inputmode="numeric"
-        maxlength="6"
-        placeholder="Contoh: 654321"
-        autocomplete="off"
-      >
+      <input id="newPhotoCode" type="text"
+        inputmode="numeric" maxlength="6"
+        placeholder="Contoh: 654321" autocomplete="off">
     </div>
 
     <div class="field">
       <label for="fileName">Nama file foto</label>
-      <input
-        id="fileName"
-        type="text"
-        placeholder="Contoh: foto.jpg"
-        autocomplete="off"
-      >
+      <input id="fileName" type="text"
+        placeholder="Contoh: foto.jpg" autocomplete="off">
     </div>
 
-    <button class="full" id="confirmButton">
-      Konfirmasi & Buat index.html Baru
-    </button>
+    <button class="full" id="confirmButton">Simpan Foto</button>
 
     <div class="message" id="adminMessage" role="status"></div>
 
-    <button class="full export" id="exportButton">
-      Download index.html Terbaru
-    </button>
-
     <p class="small">
-      Setelah file index.html terbaru diunduh,
-      unggah foto dan index.html tersebut ke repository
-      GitHub pada folder yang sama, lalu commit perubahan.
+      Setelah berhasil, index.html terbaru akan otomatis diunduh.
+      Ganti file lama di GitHub dengan file terbaru tersebut.
     </p>
 
     <div class="code-list" id="codeList"></div>
-
   </section>
-
 </main>
 
+<!-- DATA KODE FOTO -->
 <script id="photo-data" type="application/json">
 {
   "482916": "alyanocalor.jpg",
@@ -271,17 +149,14 @@ const adminButton = document.getElementById("adminButton");
 
 const accessCode = document.getElementById("accessCode");
 const message = document.getElementById("message");
-
 const photoWrap = document.getElementById("photoWrap");
 const photo = document.getElementById("photo");
 
-let currentPhotoPath = "";
 let isAdmin = false;
-
+let currentPhotoPath = "";
 
 // LOGIN ADMIN
 adminButton.addEventListener("click", () => {
-
   if (isAdmin) {
     logoutAdmin();
     return;
@@ -299,38 +174,30 @@ adminButton.addEventListener("click", () => {
   loginAdmin();
 });
 
-
 function loginAdmin() {
   isAdmin = true;
-
   clientPanel.style.display = "none";
   adminPanel.style.display = "block";
-
   adminButton.textContent = "Keluar Admin";
-
   updateCodeList();
 }
-
 
 // KELUAR ADMIN
 function logoutAdmin() {
   isAdmin = false;
-
   adminPanel.style.display = "none";
   clientPanel.style.display = "block";
-
   adminButton.textContent = "Admin";
 
   document.getElementById("adminMessage").textContent = "";
-  document.getElementById("exportButton").style.display = "none";
-
+  document.getElementById("newPhotoCode").value = "";
+  document.getElementById("fileName").value = "";
   photoWrap.style.display = "none";
-  accessCode.value = "";
   message.textContent = "";
+  accessCode.value = "";
 }
 
-
-// BUKA FOTO CLIENT
+// CLIENT MEMBUKA FOTO
 document.getElementById("openButton")
   .addEventListener("click", openPhoto);
 
@@ -338,9 +205,7 @@ accessCode.addEventListener("keydown", e => {
   if (e.key === "Enter") openPhoto();
 });
 
-
 function openPhoto() {
-
   const code = accessCode.value.trim();
 
   message.textContent = "";
@@ -369,23 +234,19 @@ function openPhoto() {
 
   photo.onerror = () => {
     message.textContent =
-      "File foto tidak ditemukan. Periksa nama file dan pastikan sudah diunggah ke GitHub.";
-
+      "File foto tidak ditemukan. Periksa nama file di GitHub.";
     photoWrap.style.display = "none";
   };
 
   photo.src = path;
 }
 
-
 // DOWNLOAD FOTO
 document.getElementById("downloadButton")
   .addEventListener("click", () => {
-
     if (!currentPhotoPath) return;
 
     const link = document.createElement("a");
-
     link.href = currentPhotoPath;
     link.download = currentPhotoPath.split("/").pop();
 
@@ -394,10 +255,8 @@ document.getElementById("downloadButton")
     link.remove();
   });
 
-
 // ZOOM FOTO
 function toggleZoom() {
-
   if (!currentPhotoPath) return;
 
   if (photo.requestFullscreen) {
@@ -408,30 +267,23 @@ function toggleZoom() {
 }
 
 photo.addEventListener("click", toggleZoom);
-
 document.getElementById("zoomButton")
   .addEventListener("click", toggleZoom);
 
-
-// DAFTAR KODE FOTO
+// DAFTAR KODE
 function updateCodeList() {
-
   const entries = Object.entries(photoCodes);
 
   document.getElementById("codeList").innerHTML =
     "<b>Kode foto terdaftar:</b><br>" +
-    (
-      entries.length
+    (entries.length
       ? entries.map(([code, file]) =>
-          `${code} → ${escapeHtml(file)}`
+          `${escapeHtml(code)} → ${escapeHtml(file)}`
         ).join("<br>")
-      : "Belum ada kode."
-    );
+      : "Belum ada kode.");
 }
 
-
 function escapeHtml(value) {
-
   return String(value).replace(/[&<>"']/g, ch => ({
     "&":"&amp;",
     "<":"&lt;",
@@ -441,109 +293,88 @@ function escapeHtml(value) {
   }[ch]));
 }
 
-
-// TAMBAH FOTO
+// SIMPAN FOTO DAN EKSPOR INDEX OTOMATIS
 document.getElementById("confirmButton")
   .addEventListener("click", async () => {
 
     const code = document.getElementById("newPhotoCode").value.trim();
     const filename = document.getElementById("fileName").value.trim();
 
-    const adminMessage = document.getElementById("adminMessage");
-    const confirmButton = document.getElementById("confirmButton");
+    const msg = document.getElementById("adminMessage");
+    const btn = document.getElementById("confirmButton");
 
-    adminMessage.textContent = "";
+    msg.textContent = "";
 
-    document.getElementById("exportButton").style.display = "none";
-
-    // VALIDASI KODE 6 DIGIT
+    // Validasi kode
     if (!/^\d{6}$/.test(code)) {
-      adminMessage.textContent =
-        "Kode foto harus tepat 6 angka.";
+      msg.textContent = "Kode harus tepat 6 angka.";
       return;
     }
 
-    // VALIDASI NAMA FILE
+    // Validasi nama file
     if (!/^[a-zA-Z0-9._-]+\.(jpg|jpeg|png|webp|gif)$/i.test(filename)) {
-      adminMessage.textContent =
-        "Nama file tidak valid. Gunakan contoh foto.jpg tanpa spasi.";
+      msg.textContent = "Nama file tidak valid. Contoh: foto.jpg";
       return;
     }
 
-    // CEK KODE DUPLIKAT
+    // Cek kode duplikat
     if (Object.prototype.hasOwnProperty.call(photoCodes, code)) {
-      adminMessage.textContent =
-        "Kode tersebut sudah digunakan. Masukkan kode 6 digit lain.";
+      msg.textContent = "Kode sudah digunakan. Gunakan kode lain.";
       return;
     }
 
-    confirmButton.disabled = true;
+    btn.disabled = true;
+    msg.textContent = "Memeriksa foto...";
 
-    adminMessage.textContent = "Memeriksa file foto...";
-
-    // CEK APAKAH FOTO ADA
+    // Periksa keberadaan file foto
     const imageTest = new Image();
 
     const exists = await new Promise(resolve => {
-
       imageTest.onload = () => resolve(true);
       imageTest.onerror = () => resolve(false);
-
       imageTest.src = filename;
     });
 
-    confirmButton.disabled = false;
+    btn.disabled = false;
 
     if (!exists) {
-      adminMessage.textContent =
-        "Foto belum ditemukan. Pastikan file sudah berada di folder yang sama dengan index.html dan nama file tepat.";
+      msg.textContent =
+        "Foto tidak ditemukan. Pastikan foto sudah ada satu folder dengan index.html.";
       return;
     }
 
-    // SIMPAN KODE FOTO
+    // Tambahkan data baru
     photoCodes[code] = filename;
-
-    document.getElementById("photo-data").textContent =
-      JSON.stringify(photoCodes, null, 2);
 
     updateCodeList();
 
-    document.getElementById("exportButton").style.display = "block";
-
-    adminMessage.textContent =
-      "Berhasil ditambahkan. Unduh index.html terbaru, lalu unggah bersama foto ke GitHub agar client bisa mengaksesnya.";
-  });
-
-
-// EKSPOR INDEX.HTML TERBARU
-document.getElementById("exportButton")
-  .addEventListener("click", () => {
-
+    // Buat salinan HTML terbaru
     const clone = document.documentElement.cloneNode(true);
-
-    // Pastikan file hasil ekspor kembali ke mode CLIENT
-    clone.querySelector("#clientPanel").style.display = "";
-    clone.querySelector("#adminPanel").style.display = "none";
-    clone.querySelector("#adminButton").textContent = "Admin";
 
     clone.querySelector("#photo-data").textContent =
       JSON.stringify(photoCodes, null, 2);
 
-    // Bersihkan form admin
+    // Hasil ekspor kembali ke tampilan CLIENT
+    clone.querySelector("#clientPanel").style.display = "";
+    clone.querySelector("#adminPanel").style.display = "none";
+    clone.querySelector("#adminButton").textContent = "Admin";
+
+    // Bersihkan form
+    clone.querySelector("#accessCode").value = "";
     clone.querySelector("#newPhotoCode").value = "";
     clone.querySelector("#fileName").value = "";
+    clone.querySelector("#message").textContent = "";
     clone.querySelector("#adminMessage").textContent = "";
-    clone.querySelector("#exportButton").style.display = "none";
 
     const output = "<!DOCTYPE html>\n" + clone.outerHTML;
 
+    // Download index.html otomatis
     const blob = new Blob(
       [output],
       {type:"text/html;charset=utf-8"}
     );
 
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement("a");
 
     link.href = url;
@@ -553,9 +384,11 @@ document.getElementById("exportButton")
     link.click();
     link.remove();
 
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-  });
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
 
+    msg.textContent =
+      "Berhasil! index.html terbaru sudah diunduh. Ganti file lama di GitHub.";
+  });
 </script>
 
 </body>
