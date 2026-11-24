@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeri Foto Eksklusif</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #030712;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* BACKGROUND ANIMASI KREATIF */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(85, 230, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(85, 230, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 1;
+}
+
+.bg-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(85, 230, 255, 0.15) 0%, rgba(51, 153, 255, 0.02) 70%, transparent 100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  animation: pulseGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+}
+
+button, input {
+  font: inherit;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 480px;
+  background: rgba(13, 20, 38, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 32px;
+  border-radius: 24px;
+  border: 1px solid rgba(85, 230, 255, 0.25);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(85, 230, 255, 0.05);
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(85, 230, 255, 0.1);
+  color: #55e6ff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid rgba(85, 230, 255, 0.2);
+}
+
+.header-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #55e6ff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #55e6ff;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+h1 {
+  font-size: 26px;
+  margin-bottom: 8px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #8b9bb4;
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.input-box {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #223254;
+  border-radius: 14px;
+  background: rgba(5, 9, 18, 0.8);
+  color: white;
+  outline: none;
+  font-size: 18px;
+  letter-spacing: 4px;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input::placeholder {
+  letter-spacing: 2px;
+  font-weight: normal;
+  color: #405275;
+}
+
+input:focus {
+  border-color: #55e6ff;
+  box-shadow: 0 0 20px rgba(85, 230, 255, 0.3);
+  background: rgba(5, 9, 18, 0.95);
+}
+
+button.primary {
+  width: 100%;
+  background: linear-gradient(135deg, #55e6ff 0%, #0099ff 100%);
+  color: #030712;
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(85, 230, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+button.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(85, 230, 255, 0.5);
+  filter: brightness(1.1);
+}
+
+button.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button.primary:disabled {
+  background: #1b2e45;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ANIMASI SPINNER LOADING */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(3, 7, 18, 0.2);
+  border-top: 3px solid #030712;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#clientMessage {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  min-height: 20px;
+  transition: opacity 0.3s ease;
+}
+
+#photoSection {
+  display: none;
+  margin-top: 25px;
+  animation: fadeInPhoto 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInPhoto {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.photo-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #030712;
+  border: 1px solid rgba(85, 230, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin-bottom: 14px;
+}
+
+#photo {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  cursor: zoom-in;
+  transition: transform 0.4s ease;
+}
+
+#photo:hover {
+  transform: scale(1.03);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn {
+  background: #1b2945;
+  color: #fff;
+  border: 1px solid #2d4370;
+}
+
+.secondary-btn:hover {
+  background: #25375d;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #00b894 0%, #009473 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+}
+
+.download-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+}
+
+/* ZOOM VIEW */
+#zoomView {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(3, 7, 18, 0.96);
+  backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+#zoomView img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(85, 230, 255, 0.2);
+}
+
+#zoomClose {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+#zoomClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="container" id="clientPanel">
+  <div class="header-badge">Secure Vault System</div>
+  <h1>Galeri Rahasia</h1>
+  <p class="subtitle">Masukkan kode sandi 6 digit digital kamu untuk membuka akses file terenkripsi.</p>
+
+  <div class="input-box">
+    <input
+      type="text"
+      id="accessCode"
+      placeholder="------"
+      maxlength="6"
+      inputmode="numeric"
+    >
+  </div>
+
+  <button class="primary" id="openButton">
+    <div class="spinner" id="loadingSpinner"></div>
+    <span id="buttonText">Dekripsi & Buka Foto</span>
+  </button>
+
+  <p id="clientMessage"></p>
+
+  <div id="photoSection">
+    <div class="photo-wrapper">
+      <img id="photo" alt="Foto terenkripsi">
+    </div>
+
+    <div class="actions">
+      <button class="secondary-btn" id="zoomButton">
+        🔍 Perbesar
+      </button>
+      <button class="download-btn" id="downloadButton">
+        📥 Unduh File
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TAMPILAN ZOOM -->
+<div id="zoomView">
+  <button id="zoomClose">Tutup [X]</button>
+  <img id="zoomImage" alt="Zoom Foto">
+</div>
+
+<script>
+// ================= TEMPAT HUBUNGKAN KE BACKEND =================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznJTe8JZwQjYa_CWzNkH3xw3V-k6oAyOxmx1HK5x6O8nqTaze2vkphtDxp3K-sln1_/exec";
+// ===============================================================
+
+const accessCode = document.getElementById("accessCode");
+const openButton = document.getElementById("openButton");
+const buttonText = document.getElementById("buttonText");
+const loadingSpinner = document.getElementById("loadingSpinner");
+const clientMessage = document.getElementById("clientMessage");
+const photo = document.getElementById("photo");
+const photoSection = document.getElementById("photoSection");
+
+let currentPhoto = "";
+
+openButton.addEventListener("click", async () => {
+  const code = accessCode.value.trim();
+
+  if (!/^\d{6}$/.test(code)) {
+    clientMessage.style.color = "#ff6b6b";
+    clientMessage.textContent = "⚠️ Format kode salah! Harap masukkan tepat 6 digit angka.";
+    photoSection.style.display = "none";
+    return;
+  }
+
+  // Animasi Loading Aktif
+  openButton.disabled = true;
+  buttonText.textContent = "Menghubungkan ke Server...";
+  loadingSpinner.style.display = "block";
+  clientMessage.textContent = "";
+  photoSection.style.display = "none";
+
+  try {
+    const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`);
+    const data = await response.json();
+
+    if (data.status === "success" && data.filename) {
+      photo.onload = () => {
+        currentPhoto = data.filename;
+        photoSection.style.display = "block";
+        clientMessage.style.color = "#55e6ff";
+        clientMessage.textContent = "✨ Berhasil! Data terdekripsi dengan sempurna.";
+        
+        openButton.disabled = false;
+        buttonText.textContent = "Dekripsi & Buka Foto";
+        loadingSpinner.style.display = "none";
+      };
+
+      photo.onerror = () => {
+        photoSection.style.display = "none";
+        clientMessage.style.color = "#ff6b6b";
+        clientMessage.textContent = "❌ Kode valid, tetapi file gambar tidak ditemukan di direktori GitHub.";
+        
+        openButton.disabled = false;
+        buttonText.textContent = "Dekripsi & Buka Foto";
+        loadingSpinner.style.display = "none";
+      };
+
+      photo.src = data.filename;
+    } else {
+      clientMessage.style.color = "#ff6b6b";
+      clientMessage.textContent = data.message || "❌ Kode akses ditolak atau tidak terdaftar.";
+      
+      openButton.disabled = false;
+      buttonText.textContent = "Dekripsi & Buka Foto";
+      loadingSpinner.style.display = "none";
+    }
+  } catch (error) {
+    clientMessage.style.color = "#ff6b6b";
+    clientMessage.textContent = "🌐 Gagal terhubung ke jaringan backend Sheets.";
+    
+    openButton.disabled = false;
+    buttonText.textContent = "Dekripsi & Buka Foto";
+    loadingSpinner.style.display = "none";
+  }
+});
+
+// Fitur Zoom & Download
+function openZoom() {
+  document.getElementById("zoomImage").src = photo.src;
+  document.getElementById("zoomView").style.display = "flex";
+}
+
+document.getElementById("zoomButton").addEventListener("click", openZoom);
+photo.addEventListener("click", openZoom);
+
+document.getElementById("zoomClose").addEventListener("click", () => {
+  document.getElementById("zoomView").style.display = "none";
+});
+
+document.getElementById("downloadButton").addEventListener("click", () => {
+  if (!currentPhoto) return;
+
+  const link = document.createElement("a");
+  link.href = currentPhoto;
+  link.download = currentPhoto.split("/").pop();
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+});
+</script>
+
+</body>
+</html>
